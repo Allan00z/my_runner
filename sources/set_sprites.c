@@ -50,10 +50,12 @@ void *move_player(play_t *character)
         character[0].rect.left += 67;
 }
 
-int display_help(void)
+void *move_opponent(opp_t *enemy)
 {
-    write(1, "Welcome in Goal Hero !\n\n", 24);
-    write(1, "The goal : reach the end of the field by ", 43);
-    write(1, "passing the opposing defense.\n\nControls :\n", 42);
-    return (0);
+    if (enemy[0].rect.left == 67)
+        enemy[0].rect.left += 64;
+    else if (enemy[0].rect.left == 198)
+        enemy[0].rect.left = 0;
+    else
+        enemy[0].rect.left += 67;
 }
