@@ -11,8 +11,14 @@ SRC	=	sources/window.c	\
 		sources/move.c	\
 		sources/init.c	\
 		sources/main_menu.c	\
+		sources/file_read.c	\
+		sources/object_init.c	\
+		sources/menu.c	\
+		sources/victory_or_defeat.c	\
 		lib/my_strcmp.c	\
 		lib/my_strlen.c	\
+		lib/my_getnbr.c	\
+		lib/my_get_size_nbr.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

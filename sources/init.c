@@ -12,21 +12,17 @@ game_t map_init(game_t map, sfVideoMode mode)
     map.sky.g = 220;
     map.sky.b = 252;
     map.sky.a = 1;
+    map.nb_enemy = 0;
     map.sprites = sfTexture_createFromFile("sprite/sprites.png", NULL);
     map.window = sfRenderWindow_create(mode, "Goal Hero", sfClose, NULL);
-    map.foreground = init_rect(0, 1889, 271, 800);
-    map.foreground.vec = init_vect(0, 329);
-    map.background = init_rect(0, 0, 101, 3840);
-    map.background.vec = init_vect(0, 0);
-    map.midground = init_rect(0, 131, 270, 1232);
-    map.midground.vec = init_vect(0, 80);
-    sfSprite_setTexture(map.foreground.sprite, map.sprites, sfFalse);
-    sfSprite_setTexture(map.background.sprite, map.sprites, sfFalse);
-    sfSprite_setTexture(map.midground.sprite, map.sprites, sfFalse);
-    sfSprite_setTextureRect(map.midground.sprite, map.midground.rect);
-    sfSprite_setTextureRect(map.background.sprite, map.background.rect);
-    sfSprite_setTextureRect(map.foreground.sprite, map.foreground.rect);
+    sfRenderWindow_setFramerateLimit(map.window, 60);
+    map = objects_init(map);
+    map.view = sfView_create();
+    map.view = sfView_createFromRect((sfFloatRect) {0, 0, 800, 600});
     map.clock = sfClock_create();
+    sfRenderWindow_setMouseCursorVisible(map.window, sfTrue);
+    map.is_finish = 0;
+    map.font = sfFont_createFromFile("sprite/Minecraft.ttf");
     return (map);
 }
 
@@ -35,9 +31,10 @@ play_t *player_init(game_t map)
     play_t *character = malloc(sizeof(play_t));
 
     character[0] = init_rect_player(0, 406, 64, 41);
-    character[0].vec = init_vect(0, 400);
+    character[0].vec = init_vect(5, 400);
     character[0].is_jumping = 0;
     character[0].jump_clock = sfClock_create();
+    character[0].high_jump = 0;
     sfSprite_setTexture(character[0].sprite, map.sprites, sfFalse);
     sfSprite_setTextureRect(character[0].sprite, character[0].rect);
     sfSprite_scale(character[0].sprite, (sfVector2f) {2, 2});
@@ -45,20 +42,25 @@ play_t *player_init(game_t map)
     return (character);
 }
 
-opp_t *oppenent_init(game_t map)
+opp_t *oppenent_init(game_t map, char **level)
 {
-    opp_t *enemy = malloc(sizeof(opp_t));
+    opp_t *enemy;
 
-    enemy[0].rect.left = 0;
-    enemy[0].rect.top = 471;
-    enemy[0].rect.width = 41;
-    enemy[0].rect.height = 64;
-    enemy[0].sprite = sfSprite_create();
-    enemy[0].vec = init_vect(850, 400);
-    sfSprite_setTexture(enemy[0].sprite, map.sprites, sfFalse);
-    sfSprite_setTextureRect(enemy[0].sprite, enemy[0].rect);
-    sfSprite_scale(enemy[0].sprite, (sfVector2f) {-2, 2});
-    enemy[0].opp_clock = sfClock_create();
+    for (int i = 0; i < my_strlen(level[0]); i++) {
+        if (level[0][i] == '2')
+            map.nb_enemy += 1;
+    }
+    enemy = malloc(sizeof(opp_t) * map.nb_enemy);
+    for (int i = 0; i < map.nb_enemy; i++) {
+        enemy[i].character = '2';
+        enemy[i].rect = init_rect(0, 471, 64, 41);
+        enemy[i].sprite = sfSprite_create();
+        enemy[i].vec = init_vect(850, 400);
+        sfSprite_setTexture(enemy[i].sprite, map.sprites, sfFalse);
+        sfSprite_setTextureRect(enemy[i].sprite, enemy[i].rect);
+        sfSprite_scale(enemy[i].sprite, (sfVector2f) {-2, 2});
+        enemy[i].opp_clock = sfClock_create();
+    }
     return (enemy);
 }
 
@@ -66,8 +68,8 @@ obj_t start_init(game_t map)
 {
     obj_t object;
 
-    object = init_rect(0, 546, 128, 256);
-    object.vec = init_vect(250, 50);
+    object.rect = init_rect(0, 546, 128, 256);
+    object.vec = init_vect(250, 150);
     object.sprite = sfSprite_create();
     object.press = 0;
     sfSprite_setTexture(object.sprite, map.sprites, sfFalse);
@@ -82,7 +84,7 @@ obj_t exit_init(game_t map)
     obj_t object;
 
     object.press = 0;
-    object = init_rect(0, 828, 128, 256);
+    object.rect = init_rect(0, 828, 128, 256);
     object.vec = init_vect(250, 350);
     object.sprite = sfSprite_create();
     sfSprite_setTexture(object.sprite, map.sprites, sfFalse);

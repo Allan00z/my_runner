@@ -16,16 +16,15 @@ sfVector2f init_vect(int x, int y)
     return (vec);
 }
 
-obj_t init_rect(int x, int y, int height, int width)
+sfIntRect init_rect(int x, int y, int height, int width)
 {
-    obj_t object;
+    sfIntRect rect;
 
-    object.rect.left = x;
-    object.rect.top = y;
-    object.rect.height = height;
-    object.rect.width = width;
-    object.sprite = sfSprite_create();
-    return (object);
+    rect.left = x;
+    rect.top = y;
+    rect.height = height;
+    rect.width = width;
+    return (rect);
 }
 
 play_t init_rect_player(int x, int y, int height, int width)
@@ -50,12 +49,12 @@ void *move_player(play_t *character)
         character[0].rect.left += 67;
 }
 
-void *move_opponent(opp_t *enemy)
+void *move_opponent(opp_t *enemy, int i)
 {
-    if (enemy[0].rect.left == 67)
-        enemy[0].rect.left += 64;
-    else if (enemy[0].rect.left == 198)
-        enemy[0].rect.left = 0;
+    if (enemy[i].rect.left == 67)
+        enemy[i].rect.left += 64;
+    else if (enemy[i].rect.left == 198)
+        enemy[i].rect.left = 0;
     else
-        enemy[0].rect.left += 67;
+        enemy[i].rect.left += 67;
 }
