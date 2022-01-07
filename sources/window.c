@@ -15,27 +15,6 @@ int close_window(sfRenderWindow* window, sfEvent event)
     return (0);
 }
 
-void destroyer(game_t map, play_t *character, opp_t *enemy, menu_t *menu)
-{
-    sfSprite_destroy(menu[0].start.sprite);
-    sfSprite_destroy(menu[0].exit.sprite);
-    free(menu);
-    sfClock_destroy(map.clock);
-    sfClock_destroy(character[0].jump_clock);
-    sfClock_destroy(character[0].run_clock);
-    for (int i = 0; i < map.nb_enemy; i++) {
-        sfClock_destroy(enemy[i].opp_clock);
-        sfSprite_destroy(enemy[i].sprite);
-    }
-    sfSprite_destroy(map.background.sprite);
-    sfSprite_destroy(map.midground.sprite);
-    sfSprite_destroy(character[0].sprite);
-    sfSprite_destroy(map.foreground.sprite);
-    sfTexture_destroy(map.sprites);
-    sfRenderWindow_destroy(map.window);
-    sfView_destroy(map.view);
-}
-
 int display_help(void)
 {
     write(1, "Welcome in Goal Hero !\n\nThe goal : ", 35);
@@ -45,38 +24,42 @@ int display_help(void)
     return (0);
 }
 
-int runner_main(char *file)
+int runner_main(char *file, sfRenderWindow *window)
 {
     char **level = file_read(file);
-    sfVideoMode mode = {800, 600, 32};
-    game_t map = map_init(map, mode);
+    int is_menu = 0;
+    game_t map = map_init(map, window, file);
     menu_t *menu = main_menu_init(map);
-    play_t *character = player_init(map);
+    play_t *character = player_init(map, file);
     opp_t *enemy = oppenent_init(map, level);
 
-    if (main_menu_display(menu, map) == 1) {
+    if (main_menu_display(menu, map, 0, character) == 1) {
         destroyer(map, character, enemy, menu);
         return (0);
     }
     map.x = 0;
-    map.nb_enemy = level_generator(level, map, enemy);
-    while (sfRenderWindow_isOpen(map.window)) {
+    map = level_generator(level, map, enemy, menu);
+    while (sfRenderWindow_isOpen(map.window) && menu[0].is_playing == 1) {
         sfRenderWindow_clear(map.window, map.sky);
         while (sfRenderWindow_pollEvent(map.window, &map.event))
-            jump_character(character, map);
-        map = paralax_map(map, character, enemy, file);
-        move_jump(character, map, file);
+            jump_character(character, menu, map);
+        map = paralax_map(map, character, enemy, menu);
+        move_jump(character, map, menu, file);
     }
+    if (menu[0].is_menu == 1)
+        is_menu = 1;
     destroyer(map, character, enemy, menu);
-    free(enemy);
-    free(character);
+    if (is_menu == 1)
+        runner_main(file, map.window);
+    free_all(enemy, character, level);
     return (0);
 }
 
 int main(int argc, char **argv)
 {
+    int ret = 84;
+
     if (argc == 2)
-        return (check_args(argc, argv));
-    else
-        return (84);
+        ret = check_args(argc, argv);
+    return (ret);
 }

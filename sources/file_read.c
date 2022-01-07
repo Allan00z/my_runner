@@ -46,6 +46,8 @@ char **file_read(char *file)
     level[1] = malloc(sizeof(char) * lenght);
     read(fd, buffer, my_get_size_nbr(lenght) + 1);
     read(fd, buffer, my_get_size_nbr(height) + 1);
+    for (int i = 0; buffer[0] != '\n'; i++)
+        read(fd, buffer, 1);
     read(fd, level[0], lenght);
     read(fd, level[1], lenght);
     free(buffer);
@@ -53,12 +55,13 @@ char **file_read(char *file)
     return (level);
 }
 
-int level_generator(char **level, game_t map, opp_t *enemy)
+game_t level_generator(char **level, game_t map, opp_t *enemy, menu_t *menu)
 {
     int nb = 0;
 
     for (int i = 0; i < my_strlen(level[0]); i++) {
         if (level[0][i] == '2') {
+            enemy[nb].rect.top = 341 + (65 * menu[0].team_opp);
             enemy[nb].vec.x = i * 40;
             sfSprite_setPosition(enemy[nb].sprite, enemy[nb].vec);
             nb += 1;
@@ -68,5 +71,19 @@ int level_generator(char **level, game_t map, opp_t *enemy)
             sfSprite_setPosition(map.finish.sprite, map.finish.vec);
         }
     }
-    return (nb);
+    map.nb_enemy = nb;
+    sound_jump(map, menu, 2);
+    return (map);
+}
+
+void sound_jump(game_t map, menu_t *menu, int playing)
+{
+    if (menu[0].sound == 1 && playing == 0)
+        sfSound_play(map.sound);
+    if (menu[0].sound == 1 && playing == 1)
+        sfSound_stop(map.sound);
+    if (menu[0].sound == 1 && playing == 2)
+        sfMusic_play(map.music);
+    if (menu[0].sound == 1 && playing == 3)
+        sfMusic_stop(map.music);
 }

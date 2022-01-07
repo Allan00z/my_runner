@@ -69,36 +69,42 @@ void enemy_move(opp_t *enemy, play_t *character, game_t map, int i)
         move_opponent(enemy, i);
         sfClock_restart(enemy[i].opp_clock);
     }
-    if (map.seconds >= 0.03) {
-        if (enemy[i].vec.x <= -50) {
-            sfSprite_destroy(enemy[i].sprite);
-            sfClock_destroy(enemy[i].opp_clock);
-        }
-    }
+    if (enemy[i].vec.x <= map.x - 50)
+        character[0].score += 1;
+    if (character[0].high_score < character[0].score)
+        character[0].high_score = character[0].score;
+    printf("%d\n", character[0].high_score);
     sfSprite_setTextureRect(enemy[i].sprite, enemy[i].rect);
     sfRenderWindow_drawSprite(map.window, enemy[i].sprite, NULL);
 }
 
-game_t paralax_map(game_t map, play_t *character, opp_t *enemy, char *file)
+game_t paralax_map(game_t map, play_t *character, opp_t *enemy, menu_t *menu)
 {
     map = move_run(character, map);
-    if (map.x >= lenght_reader(file) * 40)
-        return (display_finish(map, character));
+    if (map.x >= lenght_reader(map.file) * 40)
+        return (display_finish(map, character, menu));
     map = paralax_back(map);
-    map = paralax_ground(map);
+    map = ground_move(map);
     map = paralax_mid(map);
     sfRenderWindow_drawSprite(map.window, map.finish.sprite, NULL);
-    for (int i = 0; i < map.nb_enemy; i++)
+    for (int i = map.nb; i < map.nb_enemy; i++) {
         enemy_move(enemy, character, map, i);
+        if (enemy[i].vec.x <= map.x -50)
+            map.nb = map.nb + 1;
+    }
     if (map.seconds >= 0.03) {
         map.x += 10;
         character[0].vec.x += 10;
         sfView_move(map.view, (sfVector2f) {10, 0});
         sfClock_restart(map.clock);
     }
+    sfText_setPosition(character[0].text_score, (sfVector2f) {map.x + 725,0});
+    sfText_setString(character[0].text_score, my_nbr_str(character[0].score));
+    sfRenderWindow_drawText(map.window, character[0].text_score, NULL);
     sfSprite_setPosition(character[0].sprite, character[0].vec);
     sfRenderWindow_drawSprite(map.window, character[0].sprite, NULL);
     sfRenderWindow_setView(map.window, map.view);
+    enemy_hit(character, map, enemy, menu);
     sfRenderWindow_display(map.window);
     return (map);
 }

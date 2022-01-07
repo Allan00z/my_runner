@@ -15,16 +15,20 @@ SRC	=	sources/window.c	\
 		sources/object_init.c	\
 		sources/menu.c	\
 		sources/victory_or_defeat.c	\
+		sources/destroy.c	\
+		sources/display.c	\
+		sources/option_menu.c	\
+		lib/my_put_nbr.c	\
 		lib/my_strcmp.c	\
 		lib/my_strlen.c	\
 		lib/my_getnbr.c	\
-		lib/my_get_size_nbr.c	\
+		lib/my_get_size_nbr.c
 
 OBJ	=	$(SRC:.c=.o)
 
 NAME	=	my_runner
 
-FLAGS = -lcsfml-graphics -lcsfml-window -lcsfml-system -g3
+FLAGS = -lcsfml-graphics -lcsfml-window -lcsfml-system  -lcsfml-audio -g3
 
 all:	$(NAME)
 
