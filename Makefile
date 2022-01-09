@@ -18,6 +18,7 @@ SRC	=	sources/window.c	\
 		sources/destroy.c	\
 		sources/display.c	\
 		sources/option_menu.c	\
+		sources/others.c	\
 		lib/my_put_nbr.c	\
 		lib/my_strcmp.c	\
 		lib/my_strlen.c	\

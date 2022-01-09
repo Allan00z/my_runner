@@ -7,11 +7,13 @@
 #include "../my.h"
 game_t display_finish(game_t map, play_t *character, menu_t *menu)
 {
+    int x = 3840;
+
     sound_jump(map, menu, 3);
     while (menu[0].is_menu == 0 && close_window(map.window, map.event) == 0) {
         sfRenderWindow_clear(map.window, map.sky);
         menu[0].is_playing = 0;
-        set_sprite(map.background.sprite, map.background.vec, map.window, 3840);
+        set_sprite(map.background.sprite, map.background.vec, map.window, x);
         set_sprite(map.foreground.sprite, map.foreground.vec, map.window, 723);
         set_sprite(map.midground.sprite, map.midground.vec, map.window, 1232);
         map = victory_end(map, character, menu);
@@ -28,10 +30,12 @@ game_t display_finish(game_t map, play_t *character, menu_t *menu)
 
 game_t display_defeat(game_t map, play_t *character, menu_t *menu)
 {
+    int x = 3840;
+
     while (menu[0].is_menu == 0 && close_window(map.window, map.event) == 0) {
         sfRenderWindow_clear(map.window, map.sky);
         menu[0].is_playing = 0;
-        set_sprite(map.background.sprite, map.background.vec, map.window, 3840);
+        set_sprite(map.background.sprite, map.background.vec, map.window, x);
         set_sprite(map.foreground.sprite, map.foreground.vec, map.window, 723);
         set_sprite(map.midground.sprite, map.midground.vec, map.window, 1232);
         map = defeat_end(map, character, menu);
@@ -46,12 +50,14 @@ game_t display_defeat(game_t map, play_t *character, menu_t *menu)
     return (map);
 }
 
-game_t display_score(game_t map, play_t *character)
+game_t display_score(game_t map, play_t *character, int i)
 {
     sfText_setFont(map.text, map.font);
     sfText_setFont(map.score, map.font);
     sfText_setString(map.score, "SCORE : \nHIGHSCORE :");
-    sfText_setString(map.text, "DEFEAT");
+    sfText_setString(map.text, "VICTORY");
+    if (i == 0)
+        sfText_setString(map.text, "DEFEAT");
     sfText_setFont(map.sco, map.font);
     sfText_setString(map.sco, my_nbr_str(character[0].score));
     sfText_setPosition(map.sco, (sfVector2f) {map.x + 400, 375});
@@ -74,7 +80,7 @@ game_t defeat_end(game_t map, play_t *character, menu_t *menu)
     map.high_score = sfText_create();
     map.score = sfText_create();
     map.sco = sfText_create();
-    display_score(map, character);
+    display_score(map, character, 0);
     sfText_setFillColor(map.text, sfRed);
     sfText_setFillColor(map.score, sfWhite);
     sfText_setCharacterSize(map.text, 64);

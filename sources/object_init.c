@@ -34,7 +34,6 @@ obj_t options_init(game_t map)
     return (object);
 }
 
-
 game_t objects_init(game_t map)
 {
     map.finish.rect = init_rect(0, 1250, 424, 886);

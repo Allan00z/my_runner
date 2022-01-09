@@ -48,21 +48,23 @@ void get_pressed(menu_t *menu, game_t map, int x)
     menu[0].exit.press = position_check(menu[0].exit.vec, mse, 256, 128);
 }
 
-int main_menu_display(menu_t *menu, game_t map, int x, play_t *character)
+void main_menu_reset(game_t map, menu_t *menu)
 {
     sfView_reset(map.view, (sfFloatRect) {0, 0, 800, 600});
     sfRenderWindow_setView(map.window, map.view);
     menu[0].is_playing = 0;
     menu[0].is_menu = 1;
+}
+
+int main_menu_display(menu_t *menu, game_t map, int x, play_t *character)
+{
+    main_menu_reset(map, menu);
     while (menu[0].is_playing != 1) {
         display_sprite_menu(map, menu, x);
         while (sfRenderWindow_pollEvent(map.window, &map.event))
             get_pressed(menu, map, x);
-        if (menu[0].start.press == 1) {
-            menu[0].is_playing = 1;
-            menu[0].is_menu = 0;
-            return (0);
-        }
+        if (menu[0].start.press == 1)
+            return (menu_start_press(menu));
         if (menu[0].options.press == 1)
             options_menu(menu, map, character);
         if (menu[0].exit.press == 1) {

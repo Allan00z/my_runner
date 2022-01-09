@@ -12,35 +12,21 @@ game_t victory_end(game_t map, play_t *character, menu_t *menu)
     map.score = sfText_create();
     map.sco = sfText_create();
     map.high_score = sfText_create();
-    sfText_setFont(map.sco, map.font);
-    sfText_setString(map.sco, my_nbr_str(character[0].score));
-    sfText_setPosition(map.sco, (sfVector2f) {map.x + 400, 375});
-    sfText_setFillColor(map.sco, sfWhite);
-    sfText_setCharacterSize(map.sco, 64);
-    sfRenderWindow_drawText(map.window, map.sco, sfFalse);
-    sfText_setFont(map.high_score, map.font);
-    sfText_setString(map.high_score, my_nbr_str(character[0].high_score));
-    sfText_setPosition(map.high_score, (sfVector2f) {map.x + 550, 450});
-    sfText_setFillColor(map.high_score, sfWhite);
-    sfText_setCharacterSize(map.high_score, 64);
-    sfRenderWindow_drawText(map.window, map.high_score, sfFalse);
-    sfText_setFont(map.score, map.font);
-    sfText_setString(map.score, "SCORE : \nHIGHSCORE :");
-    sfText_setPosition(map.score, (sfVector2f) {map.x + 100, 375});
-    sfText_setFillColor(map.score, sfWhite);
-    sfText_setCharacterSize(map.score, 64);
-    sfRenderWindow_drawText(map.window, map.score, sfFalse);
-    sfText_setFont(map.text, map.font);
-    sfText_setString(map.text, "VICTORY");
-    sfText_setPosition(map.text, (sfVector2f) {map.x + 200, 100});
+    map = display_score(map, character, 1);
     sfText_setFillColor(map.text, sfRed);
+    sfText_setFillColor(map.score, sfWhite);
     sfText_setCharacterSize(map.text, 64);
+    sfText_setCharacterSize(map.score, 64);
     sfText_setScale(map.text, (sfVector2f) {1.5, 1.5});
+    sfRenderWindow_drawText(map.window, map.score, sfFalse);
     sfRenderWindow_drawText(map.window, map.text, sfFalse);
     sfSprite_setPosition(menu[0].menu.sprite, (sfVector2f) {map.x + 275, 250});
     sfRenderWindow_drawSprite(map.window, menu[0].menu.sprite, NULL);
+    sfRenderWindow_drawText(map.window, map.high_score, sfFalse);
     sfText_destroy(map.text);
     sfText_destroy(map.score);
+    sfText_destroy(map.sco);
+    sfText_destroy(map.high_score);
     return (map);
 }
 
@@ -71,7 +57,8 @@ int enemy_hit(play_t *character, game_t map, opp_t *enemy, menu_t *menu)
     float y_max = character[0].vec.y + character[0].rect.height;
 
     for (int i = 0; i < map.nb_enemy; i++) {
-        if (x <= enemy[i].vec.x && x >= enemy[i].vec.x - 70 && y_max >= enemy[i].vec.y) {
+        if (x <= enemy[i].vec.x && x >= enemy[i].vec.x - 70 &&
+        y_max >= enemy[i].vec.y) {
             menu[0].is_playing = 0;
             map = display_defeat(map, character, menu);
         }

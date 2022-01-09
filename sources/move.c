@@ -33,8 +33,7 @@ void move_jump(play_t *character, game_t map, menu_t *menu, char *file)
             character[0].vec.y -= character[0].high_jump;
             sfClock_restart(character[0].jump_clock);
         }
-    }
-    else if (character[0].is_jumping == 1 || character[0].vec.y <= 390) {
+    } else if (character[0].is_jumping == 1 || character[0].vec.y <= 390) {
         if (character[0].vec.y <= 390 && character[0].seconds >= 0.03) {
             character[0].is_jumping = 0;
             sfSprite_setPosition(character[0].sprite, character[0].vec);
@@ -42,6 +41,7 @@ void move_jump(play_t *character, game_t map, menu_t *menu, char *file)
     }
     fall_jump(character, map, menu);
     sfRenderWindow_display(map.window);
+    sfRenderWindow_clear(map.window, map.sky);
 }
 
 void fall_jump(play_t *character, game_t map, menu_t *menu)
@@ -52,8 +52,7 @@ void fall_jump(play_t *character, game_t map, menu_t *menu)
             character[0].high_jump -= 2;
             sfClock_restart(character[0].jump_clock);
         }
-    }
-    else if (character[0].is_jumping == 0) {
+    } else if (character[0].is_jumping == 0) {
         if (character[0].vec.y - character[0].high_jump >= 400) {
             character[0].vec.y = 400;
             sound_jump(map, menu, 1);

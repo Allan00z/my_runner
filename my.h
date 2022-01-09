@@ -126,6 +126,8 @@ int lenght_reader(char *file);
 int press_menu(menu_t *menu, game_t map, play_t *character);
 int enemy_hit(play_t *character, game_t map, opp_t *enemy, menu_t *menu);
 int end_pressed(sfMouseButtonEvent mse, game_t map);
+int menu_start_press(menu_t *menu);
+int destroyer(game_t map, play_t *character, opp_t *enemy, menu_t *menu);
 
 sfIntRect init_rect(int x, int y, int height, int width);
 
@@ -150,9 +152,11 @@ game_t display_finish(game_t map, play_t *character, menu_t *menu);
 game_t victory_end(game_t map, play_t *character, menu_t *menu);
 game_t display_defeat(game_t map, play_t *character, menu_t *menu);
 game_t defeat_end(game_t map, play_t *character, menu_t *menu);
+game_t display_score(game_t map, play_t *character, int i);
 
 play_t init_rect_player(int x, int y, int height, int width);
 play_t *player_init(game_t map, char *file);
+play_t *character_jump_init(play_t *character);
 
 op_menu_t destroyer_option(op_menu_t options, menu_t *menu);
 
@@ -163,7 +167,6 @@ void *move_opponent(opp_t *enemy, int i);
 void *move_player(play_t *character);
 void jump_character(play_t *character, menu_t *menu, game_t map);
 void move_jump(play_t *character, game_t map, menu_t *menu, char *file);
-void destroyer(game_t map, play_t *character, opp_t *enemy, menu_t *menu);
 void display_sprite_menu(game_t map, menu_t *menu, int x);
 void fall_jump(play_t *character, game_t map, menu_t *menu);
 void set_sprite(sfSprite *sprite, sfVector2f vec, sfRenderWindow *wind, int x);
@@ -172,6 +175,9 @@ void options_menu(menu_t *menu, game_t map, play_t *character);
 void high_score_write(char *file, play_t *character);
 void character_init(play_t *character);
 void get_pressed(menu_t *menu, game_t map, int x);
+void set_position_option(game_t map, op_menu_t options, menu_t *menu);
+void postion_option_check(menu_t *menu, op_menu_t opt, sfMouseButtonEvent mse);
+void paralax_displa(play_t *character, opp_t *enemy, game_t map, menu_t *menu);
 
 menu_t *main_menu_init(game_t map);
 

@@ -68,3 +68,12 @@ int press_menu(menu_t *menu, game_t map, play_t *character)
     }
     return (0);
 }
+
+play_t *character_jump_init(play_t *character)
+{
+    character[0].is_jumping = 0;
+    character[0].jump_clock = sfClock_create();
+    character[0].high_jump = 0;
+    character[0].score = 0;
+    return (character);
+}

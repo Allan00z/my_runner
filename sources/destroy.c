@@ -17,7 +17,7 @@ void destroyer_menu_charac(menu_t *menu, play_t *character)
     free(menu);
 }
 
-void destroyer(game_t map, play_t *character, opp_t *enemy, menu_t *menu)
+int destroyer(game_t map, play_t *character, opp_t *enemy, menu_t *menu)
 {
     high_score_write(map.file, character);
     sfClock_destroy(map.clock);
@@ -37,6 +37,7 @@ void destroyer(game_t map, play_t *character, opp_t *enemy, menu_t *menu)
     sfMusic_destroy(map.music);
     sfSound_destroy(map.sound);
     sfSoundBuffer_destroy(map.buffer);
+    return (0);
 }
 
 op_menu_t destroyer_option(op_menu_t options, menu_t *menu)

@@ -59,6 +59,7 @@ game_t level_generator(char **level, game_t map, opp_t *enemy, menu_t *menu)
 {
     int nb = 0;
 
+    map.x = 0;
     for (int i = 0; i < my_strlen(level[0]); i++) {
         if (level[0][i] == '2') {
             enemy[nb].rect.top = 341 + (65 * menu[0].team_opp);

@@ -73,7 +73,6 @@ void enemy_move(opp_t *enemy, play_t *character, game_t map, int i)
         character[0].score += 1;
     if (character[0].high_score < character[0].score)
         character[0].high_score = character[0].score;
-    printf("%d\n", character[0].high_score);
     sfSprite_setTextureRect(enemy[i].sprite, enemy[i].rect);
     sfRenderWindow_drawSprite(map.window, enemy[i].sprite, NULL);
 }
@@ -98,13 +97,6 @@ game_t paralax_map(game_t map, play_t *character, opp_t *enemy, menu_t *menu)
         sfView_move(map.view, (sfVector2f) {10, 0});
         sfClock_restart(map.clock);
     }
-    sfText_setPosition(character[0].text_score, (sfVector2f) {map.x + 725,0});
-    sfText_setString(character[0].text_score, my_nbr_str(character[0].score));
-    sfRenderWindow_drawText(map.window, character[0].text_score, NULL);
-    sfSprite_setPosition(character[0].sprite, character[0].vec);
-    sfRenderWindow_drawSprite(map.window, character[0].sprite, NULL);
-    sfRenderWindow_setView(map.window, map.view);
-    enemy_hit(character, map, enemy, menu);
-    sfRenderWindow_display(map.window);
+    paralax_displa(character, enemy, map, menu);
     return (map);
 }

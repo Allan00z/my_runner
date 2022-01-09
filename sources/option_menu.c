@@ -36,18 +36,7 @@ obj_t back_menu_init(game_t map)
 void option_menu_display(game_t map, op_menu_t options, menu_t *menu)
 {
     sfRenderWindow_clear(map.window, map.sky);
-    sfSprite_setPosition(map.background.sprite, map.background.vec);
-    sfSprite_setPosition(map.foreground.sprite, map.foreground.vec);
-    sfSprite_setPosition(map.midground.sprite, map.midground.vec);
-    sfSprite_setPosition(options.one.sprite, options.one.vec);
-    sfSprite_setPosition(options.two.sprite, options.two.vec);
-    sfSprite_setPosition(options.three.sprite, options.three.vec);
-    sfSprite_setPosition(options.back.sprite, options.back.vec);
-    sfSprite_setPosition(options.op_one.sprite, options.op_one.vec);
-    sfSprite_setPosition(options.op_two.sprite, options.op_two.vec);
-    sfSprite_setPosition(options.op_three.sprite, options.op_three.vec);
-    sfSprite_setPosition(options.no_sound.sprite, options.no_sound.vec);
-    sfSprite_setPosition(options.sound.sprite, options.sound.vec);
+    set_position_option(map, options, menu);
     sfRenderWindow_drawSprite(map.window, map.background.sprite, NULL);
     sfRenderWindow_drawSprite(map.window, map.foreground.sprite, NULL);
     sfRenderWindow_drawSprite(map.window, map.midground.sprite, NULL);
@@ -73,24 +62,7 @@ op_menu_t option_press(op_menu_t options, game_t map, menu_t *menu)
             return (options);
     }
     mse = map.event.mouseButton;
-    if (position_check(options.one.vec, mse, 72, 112) == 1)
-        menu[0].team_char = 1;
-    if (position_check(options.two.vec, mse, 72, 112) == 1)
-        menu[0].team_char = 2;
-    if (position_check(options.three.vec, mse, 72, 112) == 1)
-        menu[0].team_char = 3;
-    if (position_check(options.op_one.vec, mse, 72, 112) == 1)
-        menu[0].team_opp = 1;
-    if (position_check(options.op_two.vec, mse, 72, 112) == 1)
-        menu[0].team_opp = 2;
-    if (position_check(options.op_three.vec, mse, 72, 112) == 1)
-        menu[0].team_opp = 3;
-    if (position_check(options.no_sound.vec, mse, 122, 96) == 1) {
-        if (menu[0].sound == 0)
-            menu[0].sound = 1;
-        else if (menu[0].sound == 1)
-            menu[0].sound = 0;
-    }
+    postion_option_check(menu, options, mse);
     while (map.event.mouseButton.type != sfEvtMouseButtonReleased)
         sfRenderWindow_pollEvent(map.window, &map.event);
     options.back.press = position_check(options.back.vec, mse, 79, 89);

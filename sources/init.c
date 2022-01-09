@@ -36,14 +36,11 @@ play_t *player_init(game_t map, char *file)
 
     character[0] = init_rect_player(0, 406, 64, 41);
     character[0].vec = init_vect(5, 400);
-    character[0].is_jumping = 0;
-    character[0].jump_clock = sfClock_create();
-    character[0].high_jump = 0;
+    character = character_jump_init(character);
     sfSprite_setTexture(character[0].sprite, map.sprites, sfFalse);
     sfSprite_setTextureRect(character[0].sprite, character[0].rect);
     sfSprite_scale(character[0].sprite, (sfVector2f) {2, 2});
     character[0].run_clock = sfClock_create();
-    character[0].score = 0;
     read(fd, buffer, 12);
     character[0].high_score = my_getnbr(buffer);
     character[0].text_score = sfText_create();
