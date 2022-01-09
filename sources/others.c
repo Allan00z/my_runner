@@ -53,7 +53,7 @@ void postion_option_check(menu_t *menu, op_menu_t opt, sfMouseButtonEvent mse)
 
 void paralax_displa(play_t *character, opp_t *enemy, game_t map, menu_t *menu)
 {
-    sfText_setPosition(character[0].text_score, (sfVector2f) {map.x + 725,0});
+    sfText_setPosition(character[0].text_score, (sfVector2f) {map.x + 725, 0});
     sfText_setString(character[0].text_score, my_nbr_str(character[0].score));
     sfRenderWindow_drawText(map.window, character[0].text_score, NULL);
     sfSprite_setPosition(character[0].sprite, character[0].vec);
@@ -61,4 +61,24 @@ void paralax_displa(play_t *character, opp_t *enemy, game_t map, menu_t *menu)
     sfRenderWindow_setView(map.window, map.view);
     enemy_hit(character, map, enemy, menu);
     sfRenderWindow_display(map.window);
+}
+
+void options_menu(menu_t *menu, game_t map, play_t *character)
+{
+    op_menu_t options = options_menu_init(map, menu);
+
+    while (menu[0].is_menu == 2 && close_window(map.window, map.event) == 0) {
+        option_menu_display(map, options, menu);
+        while (sfRenderWindow_pollEvent(map.window, &map.event))
+            options = option_press(options, map, menu);
+        if (options.back.press == 1)
+            menu[0].is_menu = 1;
+        sfRenderWindow_display(map.window);
+    }
+    if (sfRenderWindow_isOpen(map. window) == sfTrue) {
+        while (map.event.mouseButton.type != sfEvtMouseButtonReleased)
+            sfRenderWindow_pollEvent(map.window, &map.event);
+    }
+    options = destroyer_option(options, menu);
+    character[0].rect.top = 341 + (65 * menu[0].team_char);
 }

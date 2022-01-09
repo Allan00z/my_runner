@@ -159,6 +159,8 @@ play_t *player_init(game_t map, char *file);
 play_t *character_jump_init(play_t *character);
 
 op_menu_t destroyer_option(op_menu_t options, menu_t *menu);
+op_menu_t options_menu_init(game_t map, menu_t *menu);
+op_menu_t option_press(op_menu_t options, game_t map, menu_t *menu);
 
 opp_t *oppenent_init(game_t map, char **level);
 
@@ -178,6 +180,7 @@ void get_pressed(menu_t *menu, game_t map, int x);
 void set_position_option(game_t map, op_menu_t options, menu_t *menu);
 void postion_option_check(menu_t *menu, op_menu_t opt, sfMouseButtonEvent mse);
 void paralax_displa(play_t *character, opp_t *enemy, game_t map, menu_t *menu);
+void option_menu_display(game_t map, op_menu_t options, menu_t *menu);
 
 menu_t *main_menu_init(game_t map);
 

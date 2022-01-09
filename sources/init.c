@@ -45,7 +45,7 @@ play_t *player_init(game_t map, char *file)
     character[0].high_score = my_getnbr(buffer);
     character[0].text_score = sfText_create();
     sfText_setScale(character[0].text_score, (sfVector2f) {2, 2});
-    sfText_setPosition(character[0].text_score, (sfVector2f) {725,0});
+    sfText_setPosition(character[0].text_score, (sfVector2f) {725, 0});
     sfText_setFont(character[0].text_score, map.font);
     sfText_setColor(character[0].text_score, sfRed);
     close(fd);

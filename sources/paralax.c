@@ -64,7 +64,7 @@ void enemy_move(opp_t *enemy, play_t *character, game_t map, int i)
 {
     sfSprite_setPosition(enemy[i].sprite, enemy[i].vec);
     enemy[i].time = sfClock_getElapsedTime(enemy[i].opp_clock);
-    enemy[i].opp_seconds =  enemy[i].time.microseconds / 1000000.0;
+    enemy[i].opp_seconds = enemy[i].time.microseconds / 1000000.0;
     if (enemy[i].opp_seconds >= 0.15) {
         move_opponent(enemy, i);
         sfClock_restart(enemy[i].opp_clock);

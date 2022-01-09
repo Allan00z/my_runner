@@ -29,7 +29,7 @@ OBJ	=	$(SRC:.c=.o)
 
 NAME	=	my_runner
 
-FLAGS = -lcsfml-graphics -lcsfml-window -lcsfml-system  -lcsfml-audio -g3
+FLAGS = -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -g3
 
 all:	$(NAME)
 
