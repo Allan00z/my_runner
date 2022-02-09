@@ -7,7 +7,11 @@ Usage : ./my_runner (niveau en .txt)
 Creation de map :
 
 70 (longueur de la map)
+
 4
+
 0
-        2      222    222          22        222         2    22    3  (1 = sol, 2 = ennemis, 3 = arrivée)
+
+        2      222    222          22        222         2    22    3       (1 = sol, 2 = ennemis, 3 = arrivée)
+        
 111111111111111111111111111111111111111111111111111111111111111111111
