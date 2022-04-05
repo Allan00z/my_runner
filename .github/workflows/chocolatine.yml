@@ -8,7 +8,7 @@ on:
       'ga-ignore-**'
 env:
   MIRROR_URL:
-  EXECUTABLES:
+  EXECUTABLES: my_runner
 
 jobs:
   check_repository_cleanliness:
