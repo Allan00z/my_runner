@@ -1,0 +1,59 @@
+name: Chocolatine
+on:
+  push:
+    branches-ignore:
+      'ga-ignore-**'
+  pull_request:
+    branches-ignore:
+      'ga-ignore-**'
+
+jobs:
+  check_repository_cleanliness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          res=`find . -name "#*#" -o -name "~" -o -name "*pain_au_chocolat*" -o -name "*.o" -o -name "*.a" -o -name "*.so" -o -name "*.gcno" -o -name "*.gcda" -o -name "*.gcov" -type d -name "tmp"`
+          if [[ ! $res ]]
+          then
+            exit 0
+          else
+            exit 1
+          fi
+  check_program_compilation:
+    needs: check_repository_cleanliness
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+        res=`timeout --foreground 2m make`
+        if [[ $res -eq $FAILURE ]]
+        then
+          exit 1
+        else
+          exit 0
+        fi
+        res=`timeout --foreground 2m make fclean`
+        if [[ $res -eq $FAILURE ]]
+        then
+          exit 1
+        else
+          exit 0
+        fi
+  run_tests:
+  needs: check_repository_cleanliness
+    runs-on: ubuntu-lastest
+    container:
+      image: epitechcontent/epitest-docker
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          res=`timeout --foreground 2m make tests_run`
+          if [[ $res -eq $FAILURE ]]
+          then
+            exit 1
+          else
+            exit 0
+          fi
