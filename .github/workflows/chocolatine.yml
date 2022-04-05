@@ -45,7 +45,7 @@ jobs:
         timeout-minutes: 2
   run_tests:
     needs: [check_repository_cleanliness, check_program_compilation]
-    runs-on: ubuntu-lastest
+    runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker
     steps:
