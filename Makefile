@@ -43,3 +43,6 @@ fclean: clean
 	rm $(NAME)
 
 re: fclean all
+
+tests_run:
+	echo "Je teste"
