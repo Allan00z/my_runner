@@ -42,7 +42,7 @@ jobs:
           else
             exit 0
           fi
-      - timeout-minutes: 2
+        timeout-minutes: 2
   run_tests:
     needs: check_repository_cleanliness
     runs-on: ubuntu-lastest
@@ -58,4 +58,4 @@ jobs:
           else
             exit 0
           fi
-      - timeout-minutes: 2
+        timeout-minutes: 2
