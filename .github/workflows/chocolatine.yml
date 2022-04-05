@@ -6,6 +6,8 @@ on:
   pull_request:
     branches-ignore:
       'ga-ignore-**'
+env:
+  MIRROR_URL: git@github.com:$(GITHUB_REPOSITORY).git
 
 jobs:
   check_repository_cleanliness:
@@ -35,6 +37,8 @@ jobs:
           else
             exit 0
           fi
+        timeout-minutes: 2
+      - run: |
           res=`make fclean`
           if [[ $res -eq $FAILURE ]]
           then
