@@ -28,13 +28,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-        res=`make fclean`
-        if [[ $res -eq $FAILURE ]]
-        then
-          exit 1
-        else
-          exit 0
-        fi
+          res=`make`
+          if [[ $res -eq $FAILURE ]]
+          then
+            exit 1
+          else
+            exit 0
+          fi
+          res=`make fclean`
+          if [[ $res -eq $FAILURE ]]
+          then
+            exit 1
+          else
+            exit 0
+          fi
       - timeout-minutes: 2
   run_tests:
     needs: check_repository_cleanliness
