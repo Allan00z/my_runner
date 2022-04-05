@@ -28,32 +28,34 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-        res=`timeout --foreground 2m make`
+        res=`make`
         if [[ $res -eq $FAILURE ]]
         then
           exit 1
         else
           exit 0
         fi
-        res=`timeout --foreground 2m make fclean`
+        res=`make fclean`
         if [[ $res -eq $FAILURE ]]
         then
           exit 1
         else
           exit 0
         fi
+      - timeout-minutes: 2
   run_tests:
-  needs: check_repository_cleanliness
+    needs: check_repository_cleanliness
     runs-on: ubuntu-lastest
     container:
       image: epitechcontent/epitest-docker
     steps:
       - uses: actions/checkout@v2
       - run: |
-          res=`timeout --foreground 2m make tests_run`
+          res=`make tests_run`
           if [[ $res -eq $FAILURE ]]
           then
             exit 1
           else
             exit 0
           fi
+      - timeout-minutes: 2
